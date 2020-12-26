@@ -105,7 +105,7 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
 
     };
 
-    /*
+    /**
      * Maj3oula mbech tconverti el number min  2787896 lel 2,787,896
      *
      * */

@@ -67,19 +67,27 @@ String mCode;
         mCode = covidCountry.getmCode();
         mCountry = covidCountry.getmCovidCountry();
 
+
+        /**
+         *
+         * Configuration mta3 el Line chart
+         *
+         * SetupApi mta3 el retrifit
+         *
+         * getCovidData() mta3  chart bech yjib le itezmzouet
+         *
+         *
+         * */
+
+
         configureLineChart();
         setupApi();
         getCovidData();
 
 
-// call Covid Country
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
-
-
-
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.toolbarlayout, null);
@@ -114,7 +122,7 @@ String mCode;
 
     }
 
-    /*
+    /**
      * Maj3oula mbech tconverti el number min  2787896 lel 2 787 896
      *
      * */
@@ -263,39 +271,13 @@ String mCode;
             lowLineDataSet.setDrawValues(false);
             lowLineDataSet.setCircleRadius(10f);
             lowLineDataSet.setCircleColor(Color.YELLOW);
-
-            //to make the smooth line as the graph is adrapt change so smooth curve
             lowLineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            //to enable the cubic density : if 1 then it will be sharp curve
             lowLineDataSet.setCubicIntensity(0.2f);
-            //to fill the below of smooth line in graph
-
-            //set the gradiant then the above draw fill color will be replace
-            // Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.gradiant);
-            //  highLineDataSet.setFillDrawable(drawable);
-
-            //set legend disable or enable to hide {the left down corner name of graph}
-
-
-            //to remove the cricle from the graph
             lowLineDataSet.setDrawCircles(false);
-
-            //lineDataSet.setColor(ColorTemplate.COLORFUL_COLORS);
-
-
-
-
-            //LineData is the data accord
-
             lineData.setValueTextSize(13f);
             lineData.setValueTextColor(Color.BLACK);
-
             dataSets.add(lowLineDataSet);
-
-
-
             LineDataSet closeLineDataSet = new LineDataSet(pricesClose,  " Recovered");
-
             closeLineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             closeLineDataSet.setLineWidth(5f);
             closeLineDataSet.setColor(getResources().getColor(R.color.recovered));
@@ -305,37 +287,14 @@ String mCode;
             closeLineDataSet.setDrawValues(false);
             closeLineDataSet.setCircleRadius(10f);
             closeLineDataSet.setCircleColor(Color.YELLOW);
-
-            //to make the smooth line as the graph is adrapt change so smooth curve
             closeLineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            //to enable the cubic density : if 1 then it will be sharp curve
             closeLineDataSet.setCubicIntensity(0.2f);
-            //to fill the below of smooth line in graph
-
-            //set the gradiant then the above draw fill color will be replace
-            // Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.gradiant);
-            //  highLineDataSet.setFillDrawable(drawable);
-
-            //set legend disable or enable to hide {the left down corner name of graph}
-
-
-            //to remove the cricle from the graph
             closeLineDataSet.setDrawCircles(false);
-
-            //lineDataSet.setColor(ColorTemplate.COLORFUL_COLORS);
-
-
-
-
-
             lineData.setValueTextSize(13f);
             lineData.setValueTextColor(Color.BLACK);
-
             dataSets.add(closeLineDataSet);
-
-
-         lineData = new LineData(dataSets);
-        lineChart.setData(lineData);
-        lineChart.invalidate();
+            lineData = new LineData(dataSets);
+            lineChart.setData(lineData);
+            lineChart.invalidate();
     }
 }

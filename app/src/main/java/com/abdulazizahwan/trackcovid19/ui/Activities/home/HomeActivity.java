@@ -80,7 +80,18 @@ public class HomeActivity extends AppCompatActivity {
     private CovidAPI covidAPI;
     List<CovidCountry> covidCountries;
 
-
+/**
+ *
+ *      Hethi onCreate , bech ysir feha intiilaization mta3 el views , w bech na3mel appele lel
+ *
+ *          setupApi(); bech nraka7 initilization lel API mta3 el retorfit
+ *
+ *         getDataFromServerSortTotalCases(); bech n7ather el lista mta3i tkoun 7athra kif tenzel 3al bouton mta3 el recherche
+ *
+*          getAllCovidData(); , bech tjibli el items global bech yet7atou fil home ( mta3 Global deaths w global recovered )
+*
+ *
+ * */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,11 +122,17 @@ public class HomeActivity extends AppCompatActivity {
         getDataFromServerSortTotalCases();
 
         // call Volley
- getAllCovidData();
+        getAllCovidData();
 
 
     }
 
+
+/**
+ *Initialisation lel Retro fit
+ *
+ */
+    /
     private void setupApi() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.level(HttpLoggingInterceptor.Level.BODY);
@@ -130,15 +147,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    private String getDate(long milliSecond){
-
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss aaa");
-
-        Calendar calendar= Calendar.getInstance();
-        calendar.setTimeInMillis(milliSecond);
-        return formatter.format(calendar.getTime());
-    }
-
+    /**
+     * Tharba mta3 el API loula bech tjib el global  data , number mta3 el recovered gloval etc , bech yet7atou filHome Acitivity
+     * */
     private void getAllCovidData() {
         covidAPI.getAllCovidData().enqueue(new Callback<AllCovidData>() {
 
@@ -167,6 +178,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Tharba mta3 API bech yjib el Data mta3 el lista mta3 el recherche loula kif tenzel 3al bouton
+     *
+     *      * La79i9a lahna ken tchouf fil oncreate , hethi yet3mlelha ghadi appele bech tjib lista meloul lel recherche mba3ed ken t7eb zeid
+     * ta3meleha appele ki tenzel 3al bouton mta3 el filtre bel number of cases
+     * */
     private void getDataFromServerSortTotalCases() {
 
 
@@ -228,7 +245,10 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-
+/**
+ *
+ *
+ * Tharba 3al API bech yjiblek el list mfeltriya bil ALPHABET A- Z*/
 
 
     private void getDataFromServerSortAlphabet() {
@@ -272,7 +292,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
+/**
+ * Lahna juste intiolaization Lel Lista mta3 el ITEMs eli bech yothhrou fil lista mta3 el recherche , w yzid onclick listener 3al items eli
+ *  kif bech tenzel 3ala item fel lista thehzek lel details
+ *
+ *  hanou y7ather fil adapter mta3 el items w ba3ed y7ot fil listener 3al item
+ *
+ * */
 
     private void showRecyclerView() {
         covidCountryAdapter = new CovidCountryAdapter(covidCountries, getApplicationContext());
@@ -286,17 +312,25 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void displayProgressbars(){
 
 
-
-    }
-
+    /**Lahna intent bech yemchi lel lista mta3 el details bil informatiosn eli 3andou 3al country heka
+     *
+     * */
     private void showSelectedCovidCountry(CovidCountry covidCountry) {
         Intent covidCovidCountryDetail = new Intent(getApplicationContext() ,CovidCountryDetail.class);
         covidCovidCountryDetail.putExtra("EXTRA_COVID", covidCountry);
         startActivity(covidCovidCountryDetail);
     }
+    /**
+     * Hetheya juste appele lel menu bech yothhor fil toolbar
+     *
+     * Fil setOnActionExpandListener , 3amel faza enou ken nzel 3al bouton mta3 el recherche , bech ysir appele lel onMenuItemActionExpandw
+     * Bech ywarrih el interface mta3 el Lista , , w ken nzed 3al boutonmta3 Back , bech ysir appelle lel  onMenuItemActionCollapse,
+     *  w bech yarja3 el interface mta3 el home el 3adeya $
+     *
+     *
+     * */
 
     @Override
     public  boolean  onCreateOptionsMenu(@NonNull final Menu menu) {
@@ -340,7 +374,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-
+/**
+ * lahna mabadeltech barcha , chouf el tuto mta3ek
+ * */
 
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -377,6 +413,11 @@ public class HomeActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+
+    /***
+     * Lahna chnouwa ysir kif tenzel 3al bouton mta3 el filtre
+     *
+     * */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -397,10 +438,11 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*
-    * Maj3oula mbech tconverti el number min  2787896 lel 2 787 896
+    /**
+    * Hethi Maj3oula mbech tconverti el number par exmple min  2787896 lel 2,787,896
     *
     * */
+
     private String refactorNumber(String value){
 
         DecimalFormatSymbols customSymbols = DecimalFormatSymbols.getInstance(Locale.US);
