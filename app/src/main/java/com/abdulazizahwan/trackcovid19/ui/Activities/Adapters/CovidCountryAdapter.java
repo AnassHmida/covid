@@ -1,4 +1,4 @@
-package com.abdulazizahwan.trackcovid19.ui.country;
+package com.abdulazizahwan.trackcovid19.ui.Activities.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -106,7 +106,7 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
     };
 
     /*
-     * Maj3oula mbech tconverti el number min  2787896 lel 2 787 896
+     * Maj3oula mbech tconverti el number min  2787896 lel 2,787,896
      *
      * */
     private String refactorNumber(String value){

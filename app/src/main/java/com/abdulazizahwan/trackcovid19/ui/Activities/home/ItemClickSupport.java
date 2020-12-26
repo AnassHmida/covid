@@ -1,4 +1,4 @@
-package com.abdulazizahwan.trackcovid19.ui.Activities.ClickListeners;
+package com.abdulazizahwan.trackcovid19.ui.Activities.home;
 
 import android.view.View;
 

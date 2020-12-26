@@ -7,4 +7,12 @@
     <color name="colorTotalConfirmed">#e60000</color>
     <color name="colorTotalDeaths">#999999</color>
     <color name="colorTotalRecovered">#7bb974</color>
+
+
+    <color name="recovered">#2ecc71</color>
+    <color name="confirmed">#e67e22</color>
+    <color name="dead">#ff7979</color>
+
+    <color name="bluenights">#353b48</color>
+
 </resources>

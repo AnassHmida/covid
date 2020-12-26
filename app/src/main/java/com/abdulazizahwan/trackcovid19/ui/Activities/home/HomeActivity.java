@@ -1,6 +1,7 @@
-package com.abdulazizahwan.trackcovid19.ui.home;
+package com.abdulazizahwan.trackcovid19.ui.Activities.home;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -24,30 +26,46 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulazizahwan.trackcovid19.R;
 
+import com.abdulazizahwan.trackcovid19.ui.DataSets.CovidAPI;
+import com.abdulazizahwan.trackcovid19.ui.Model.AllCovidData;
 import com.abdulazizahwan.trackcovid19.ui.Model.CovidCountry;
-import com.abdulazizahwan.trackcovid19.ui.country.CovidCountryAdapter;
-import com.abdulazizahwan.trackcovid19.ui.details.CovidCountryDetail;
-import com.abdulazizahwan.trackcovid19.ui.country.ItemClickSupport;
+
+import com.abdulazizahwan.trackcovid19.ui.Activities.Adapters.CovidCountryAdapter;
+import com.abdulazizahwan.trackcovid19.ui.Activities.details.CovidCountryDetail;
+
+import com.abdulazizahwan.trackcovid19.ui.Model.CovidDataList;
+import com.abdulazizahwan.trackcovid19.ui.Model.CovidDataResponse;
+import com.abdulazizahwan.trackcovid19.ui.Model.DataEntity;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.data.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
@@ -59,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView tvTotalConfirmed, tvTotalDeaths, tvTotalRecovered, tvLastUpdated;
     MenuItem sortcases,sortalpha,searchItem;
 
-  
+    private CovidAPI covidAPI;
     List<CovidCountry> covidCountries;
 
 
@@ -85,7 +103,7 @@ public class HomeActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvCovidCountry.getContext(), DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.line_divider));
         rvCovidCountry.addItemDecoration(dividerItemDecoration);
-
+        setupApi();
         //call list
         covidCountries = new ArrayList<>();
 
@@ -93,9 +111,23 @@ public class HomeActivity extends AppCompatActivity {
         getDataFromServerSortTotalCases();
 
         // call Volley
-        getData();
+ getAllCovidData();
+
+
     }
 
+    private void setupApi() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.level(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+        covidAPI = new retrofit2.Retrofit.Builder()
+                .client(client)
+                .baseUrl("http://corona-api.com/countries/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(CovidAPI.class);
+    }
 
 
     private String getDate(long milliSecond){
@@ -107,144 +139,140 @@ public class HomeActivity extends AppCompatActivity {
         return formatter.format(calendar.getTime());
     }
 
-    private void getData() {
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+    private void getAllCovidData() {
+        covidAPI.getAllCovidData().enqueue(new Callback<AllCovidData>() {
 
-        String url = "https://corona.lmao.ninja/v3/covid-19/all";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response) {
-                progressBar.setVisibility(View.GONE);
+            public void onResponse(Call<AllCovidData> call, retrofit2.Response<AllCovidData> response) {
 
-                try {
-                    JSONObject jsonObject = new JSONObject(response.toString());
-
-                    tvTotalConfirmed.setText(refactorNumber(jsonObject.getString("cases")));
-                    tvTotalDeaths.setText(refactorNumber(jsonObject.getString("deaths")));
-                    tvTotalRecovered.setText(refactorNumber(jsonObject.getString("recovered")));
-                    tvLastUpdated.setText(refactorNumber(jsonObject.getString("todayCases")));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (response.body() != null) {
+                    progressBar.setVisibility(View.GONE);
+                    tvTotalConfirmed.setText(refactorNumber(String.valueOf(response.body().getCases())));
+                    tvTotalDeaths.setText(refactorNumber(String.valueOf(response.body().getDeaths())));
+                    tvTotalRecovered.setText(refactorNumber(String.valueOf(response.body().getRecovered())));
+                    tvLastUpdated.setText(refactorNumber(String.valueOf(response.body().getTodayCases())));
                 }
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onFailure(Call<AllCovidData> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Log.d("Error Response", error.toString());
+                String msg = "Failed to fetch data ";
+                tvTotalConfirmed.setText(msg);
+                tvTotalDeaths.setText(msg);
+                tvTotalRecovered.setText(msg);
+                tvLastUpdated.setText(msg);
             }
         });
-
-        queue.add(stringRequest);
     }
+
+
     private void getDataFromServerSortTotalCases() {
-        String url = "https://corona-api.com/countries";
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+        covidAPI.getCovidCountriesList().enqueue(new Callback<CovidDataList>() {
             @Override
-            public void onResponse(String response) {
-                progressBar.setVisibility(View.GONE);
-                if (response != null) {
-                    Log.e(TAG, "onResponse: " + response);
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        JSONArray jsonArrayt = jsonObject.getJSONArray("data");
-                        for (int i = 0; i < jsonArrayt.length(); i++) {
-                            JSONObject data = jsonArrayt.getJSONObject(i);
+            public void onResponse(Call<CovidDataList> call, retrofit2.Response<CovidDataList> response) {
 
-                            // Extract JSONObject inside JSONObject
-                            JSONObject latestdata = data.getJSONObject("latest_data");
+                if (response.body() != null) {
+                    progressBar.setVisibility(View.GONE);
+                    CovidDataList responseData  = response.body();
 
-                            covidCountries.add(new CovidCountry(
-                                    data.getString("name"),
-                                    latestdata.getInt("confirmed"),
-                                    latestdata.getString("confirmed"),
-                                    latestdata.getString("deaths"),
-                                    latestdata.getString("deaths"),
-                                    latestdata.getString("recovered"),
-                                    latestdata.getString("critical"),
-                                    latestdata.getString("critical"),
-                                    data.getString("code")
 
-                            ));
-                        }
-                        Log.d(TAG, "onResponse: +"+covidCountries.get(0).getmCases());
-                        // sort descending
-                        Collections.sort(covidCountries, new Comparator<CovidCountry>() {
-                            @Override
-                            public int compare(CovidCountry o1, CovidCountry o2) {
-                                Log.d(TAG, "compare: "+o1.getmCases()+""+o2.getmCases());
-                                if (o1.getmCases() >= o2.getmCases()) {
-                                    return -1;
-                                } else {
-                                    return 1;
-                                }
+                    for (DataEntity data : responseData.getData()
+                         ) {
+                        covidCountries.add(new CovidCountry(
+                                data.getName(),
+                                Integer.parseInt(data.getLatestData().getConfirmed()),
+                                data.getToday().getConfirmed(),
+                                data.getLatestData().getDeaths(),
+                                data.getToday().getDeaths(),
+                               data.getLatestData().getRecovered(),
+                                data.getLatestData().getCritical(),
+                                data.getLatestData().getCritical(),
+                               data.getCode()
+                        ));
+                    }
+
+
+
+                    }
+
+                    Log.d(TAG, "onResponse: +"+covidCountries.get(0).getmCases());
+                    // sort descending
+                    Collections.sort(covidCountries, new Comparator<CovidCountry>() {
+                        @Override
+                        public int compare(CovidCountry o1, CovidCountry o2) {
+                            Log.d(TAG, "compare: "+o1.getmCases()+""+o2.getmCases());
+                            if (o1.getmCases() >= o2.getmCases()) {
+                                return -1;
+                            } else {
+                                return 1;
                             }
-                        });
+                        }
+                    });
 
-                        // Action Bar Title
-                       // getActivity().setTitle(jsonArray.length() + " countries");
+                    // Action Bar Title
+                    // getActivity().setTitle(jsonArray.length() + " countries");
 
-                        showRecyclerView();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    showRecyclerView();
+
                 }
+
+
+            @Override
+            public void onFailure(Call<CovidDataList> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Log.e(TAG, "onResponse: " + t.getMessage());
             }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                        Log.e(TAG, "onResponse: " + error);
-                    }
-                });
-        Volley.newRequestQueue(getBaseContext()).add(stringRequest);
+        });
     }
+
+
+
 
     private void getDataFromServerSortAlphabet() {
-        String url = "https://corona.lmao.ninja/v2/countries";
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+        covidAPI.getCovidCountriesList().enqueue(new Callback<CovidDataList>() {
             @Override
-            public void onResponse(String response) {
-                progressBar.setVisibility(View.GONE);
-                if (response != null) {
-                    Log.e(TAG, "onResponse: " + response);
-                    try {
-                        JSONArray jsonArray = new JSONArray(response);
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject data = jsonArray.getJSONObject(i);
+            public void onResponse(Call<CovidDataList> call, retrofit2.Response<CovidDataList> response) {
 
-                            // Extract JSONObject inside JSONObject
-                            JSONObject countryInfo = data.getJSONObject("countryInfo");
-
-                            covidCountries.add(new CovidCountry(
-                                    data.getString("country"), data.getInt("cases"),
-                                    data.getString("todayCases"), data.getString("deaths"),
-                                    data.getString("todayDeaths"), data.getString("recovered"),
-                                    data.getString("active"), data.getString("critical"),""
-                            ));
-                        }
+                if (response.body() != null) {
+                    progressBar.setVisibility(View.GONE);
+                    CovidDataList responseData  = response.body();
 
 
-                        showRecyclerView();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    for (DataEntity data : responseData.getData()
+                    ) {
+                        covidCountries.add(new CovidCountry(
+                                data.getName(),
+                                Integer.parseInt(data.getLatestData().getConfirmed()),
+                                data.getToday().getConfirmed(),
+                                data.getLatestData().getDeaths(),
+                                data.getToday().getDeaths(),
+                                data.getLatestData().getRecovered(),
+                                data.getLatestData().getCritical(),
+                                data.getLatestData().getCritical(),
+                                data.getCode()
+                        ));
                     }
+
                 }
+
+
+                showRecyclerView();
             }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                        Log.e(TAG, "onResponse: " + error);
-                    }
-                });
-        Volley.newRequestQueue(getBaseContext()).add(stringRequest);
+
+
+            @Override
+            public void onFailure(Call<CovidDataList> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Log.e(TAG, "onResponse: " + t.getMessage());
+            }
+        });
     }
+
 
     private void showRecyclerView() {
         covidCountryAdapter = new CovidCountryAdapter(covidCountries, getApplicationContext());

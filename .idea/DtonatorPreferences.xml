@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DtonatorPreferences">
     <option name="classNameOptions" value="Entity" />
-    <option name="classType" value="SINGLE_FILE_WITH_INNER_CLASS" />
+    <option name="classType" value="SEPARATE_FILE" />
     <option name="customAnnotationPattern" value="@annotationTextHere(&quot;%s&quot;)" />
     <option name="encapsulete">
       <list>
@@ -13,7 +13,9 @@
     </option>
     <option name="fieldType" value="GSON_EXPOSE" />
     <option name="naming">
-      <list />
+      <list>
+        <option value="CAMEL_CASE" />
+      </list>
     </option>
   </component>
 </project>

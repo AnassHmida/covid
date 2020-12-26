@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/white"
     tools:context=".ui.country.CountryFragment">
 
 
@@ -11,6 +11,7 @@
         android:id="@+id/rvCovidCountry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         tools:listitem="@layout/item_list_covid_country" />
 
     <ProgressBar

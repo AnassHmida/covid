@@ -1,4 +1,4 @@
-package com.abdulazizahwan.trackcovid19.ui.details;
+package com.abdulazizahwan.trackcovid19.ui.Activities.details;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -47,7 +47,7 @@ public class CovidCountryDetail extends AppCompatActivity {
 String mCode;
     String mCountry;
 
-    public static final String BASE_URL = "https://wft-geo-db.p.rapidapi.com/";
+
     private CovidAPI covidAPI;
 
     private LineChart lineChart;
@@ -69,7 +69,7 @@ String mCode;
 
         configureLineChart();
         setupApi();
-        getStockData();
+        getCovidData();
 
 
 // call Covid Country
@@ -104,7 +104,7 @@ String mCode;
 
         // set text view
         tvDetailCountryName.setText(covidCountry.getmCovidCountry());
-        tvDetailTotalCases.setText(refactorNumber(Integer.toString(covidCountry.getmCases())));
+        tvDetailTotalCases.setText(refactorNumber(String.valueOf(covidCountry.getmCases())));
         tvDetailTodayCases.setText(covidCountry.getmTodayCases());
         tvDetailTotalDeaths.setText(covidCountry.getmDeaths());
         tvDetailTodayDeaths.setText(covidCountry.getmTodayDeaths());
@@ -148,14 +148,14 @@ String mCode;
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         covidAPI = new retrofit2.Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl("http://corona-api.com/countries/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(CovidAPI.class);
     }
 
-    private void getStockData() {
+    private void getCovidData() {
 
         covidAPI.getCovidDataByCountry(mCode).enqueue(new Callback<CovidDataResponse>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -164,7 +164,7 @@ String mCode;
                 ArrayList<Entry> pricesHigh = new ArrayList<>();
                 ArrayList<Entry> pricesLow = new ArrayList<>();
                 ArrayList<Entry> pricesClose = new ArrayList<>();
-                Log.d("TAG", "onResponse: ");
+
                 if (response.body() != null) {
                     for (int i = 0; i < response.body().getData().getTimeline().size(); i++) {
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -175,11 +175,11 @@ String mCode;
                             e.printStackTrace();
                         }
                         float x = date.getTime()/1000;
-                        float y = response.body().getData().getTimeline().get(i).getConfirmed();
+                        float y = Float.parseFloat(response.body().getData().getTimeline().get(i).getConfirmed());
                         if (y != 0f) {
-                            pricesHigh.add(new Entry(x, response.body().getData().getTimeline().get(i).getConfirmed()));
-                            pricesLow.add(new Entry(x, response.body().getData().getTimeline().get(i).getDeaths()));
-                            pricesClose.add(new Entry(x, response.body().getData().getTimeline().get(i).getRecovered()));
+                            pricesHigh.add(new Entry(x, Float.parseFloat(response.body().getData().getTimeline().get(i).getConfirmed())));
+                            pricesLow.add(new Entry(x, Float.parseFloat(response.body().getData().getTimeline().get(i).getDeaths())));
+                            pricesClose.add(new Entry(x, Float.parseFloat(response.body().getData().getTimeline().get(i).getRecovered())));
                         }
                     }
                     Comparator<Entry> comparator = new Comparator<Entry>() {
