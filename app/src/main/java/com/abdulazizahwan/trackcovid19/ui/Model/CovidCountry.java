@@ -4,10 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class CovidCountry implements Parcelable {
-    String mCovidCountry, mTodayCases, mDeaths, mTodayDeaths, mRecovered, mActive, mCritical, mFlags;
+    String mCovidCountry, mTodayCases, mDeaths, mTodayDeaths, mRecovered, mActive, mCritical,mCode;
     int mCases;
 
-    public CovidCountry(String mCovidCountry, int mCases, String mTodayCases, String mDeaths, String mTodayDeaths, String mRecovered, String mActive, String mCritical, String mFlags) {
+    public CovidCountry(String mCovidCountry, int mCases, String mTodayCases, String mDeaths, String mTodayDeaths, String mRecovered, String mActive, String mCritical,String CountryCode) {
         this.mCovidCountry = mCovidCountry;
         this.mCases = mCases;
         this.mTodayCases = mTodayCases;
@@ -16,7 +16,16 @@ public class CovidCountry implements Parcelable {
         this.mRecovered = mRecovered;
         this.mActive = mActive;
         this.mCritical = mCritical;
-        this.mFlags = mFlags;
+        this.mCode = CountryCode;
+
+    }
+
+    public String getmCode() {
+        return mCode;
+    }
+
+    public void setmCode(String mCode) {
+        this.mCode = mCode;
     }
 
     public String getmCovidCountry() {
@@ -51,9 +60,6 @@ public class CovidCountry implements Parcelable {
         return mCritical;
     }
 
-    public String getmFlags() {
-        return mFlags;
-    }
 
 
     @Override
@@ -71,7 +77,8 @@ public class CovidCountry implements Parcelable {
         dest.writeString(this.mRecovered);
         dest.writeString(this.mActive);
         dest.writeString(this.mCritical);
-        dest.writeString(this.mFlags);
+        dest.writeString(this.mCode);
+
     }
 
     protected CovidCountry(Parcel in) {
@@ -83,7 +90,8 @@ public class CovidCountry implements Parcelable {
         this.mRecovered = in.readString();
         this.mActive = in.readString();
         this.mCritical = in.readString();
-        this.mFlags = in.readString();
+        this.mCode = in.readString();
+
     }
 
     public static final Creator<CovidCountry> CREATOR = new Creator<CovidCountry>() {

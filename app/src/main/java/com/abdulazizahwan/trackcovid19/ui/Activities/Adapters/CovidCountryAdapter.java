@@ -6,18 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulazizahwan.trackcovid19.R;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.abdulazizahwan.trackcovid19.ui.Model.CovidCountry;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapter.ViewHolder> implements Filterable {
 
@@ -43,14 +44,12 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
     @Override
     public void onBindViewHolder(@NonNull CovidCountryAdapter.ViewHolder holder, int position) {
         CovidCountry covidCountry = covidCountries.get(position);
-        holder.tvTotalCases.setText(Integer.toString(covidCountry.getmCases()));
+
+
+        holder.tvTotalCases.setText( refactorNumber(Integer.toString(covidCountry.getmCases())));
         holder.tvCountryName.setText(covidCountry.getmCovidCountry());
 
-        // Glide
-        Glide.with(context)
-                .load(covidCountry.getmFlags())
-                .apply(new RequestOptions().override(240, 160))
-                .into(holder.imgCountryFlag);
+
     }
 
     @Override
@@ -60,13 +59,13 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTotalCases, tvCountryName;
-        ImageView imgCountryFlag;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTotalCases = itemView.findViewById(R.id.tvTotalCases);
             tvCountryName = itemView.findViewById(R.id.tvCountryName);
-            imgCountryFlag = itemView.findViewById(R.id.imgCountryFlag);
+
         }
     }
 
@@ -102,5 +101,18 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
             covidCountries.addAll((List) results.values);
             notifyDataSetChanged();
         }
+
+
     };
+
+    /*
+     * Maj3oula mbech tconverti el number min  2787896 lel 2 787 896
+     *
+     * */
+    private String refactorNumber(String value){
+
+        DecimalFormatSymbols customSymbols = DecimalFormatSymbols.getInstance(Locale.US);
+        //   customSymbols.setGroupingSeparator(' ');
+        return new DecimalFormat("#,###", customSymbols).format(Integer.parseInt(value));
+    }
 }
