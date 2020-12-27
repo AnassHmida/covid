@@ -4,16 +4,21 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.abdulazizahwan.trackcovid19.R;
 import com.abdulazizahwan.trackcovid19.ui.DataSets.CovidAPI;
 import com.abdulazizahwan.trackcovid19.ui.Model.CovidCountry;
 import com.abdulazizahwan.trackcovid19.ui.Model.CovidDataResponse;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -40,10 +45,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CovidCountryDetail extends AppCompatActivity {
+public class CovidCountryDetailActivity extends AppCompatActivity {
 
     TextView tvDetailCountryName, tvDetailTotalCases, tvDetailTodayCases, tvDetailTotalDeaths,
-            tvDetailTodayDeaths, tvDetailTotalRecovered, tvDetailTotalActive, tvDetailTotalCritical;
+            tvDetailTodayDeaths, tvDetailTotalRecovered, tvDetailTotalActive, tvDetailTotalCritical,tvDetailRecoveryRate,tvDetailDeathRate,tvDetailPerMillion,
+    smallDetailTotalCases ,smallDetailTotalRecovered,smallDetailDeathCases,smallDetailTotalDeathCases,
+    smallDetailTotalnewCases ,smallDetailTotalnewRecovered;
 String mCode;
     String mCountry;
 
@@ -88,11 +95,22 @@ String mCode;
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.toolbarlayout, null);
 
+        ImageView actionbar_img = (ImageView)v.findViewById(R.id.title_img);
+        actionbar_img.setVisibility(View.VISIBLE);
         TextView actionbar_title = (TextView)v.findViewById(R.id.action_bar_image);
+
+
+        // Glide
+        Glide.with(getApplicationContext())
+                .load("https://www.countryflags.io/"+covidCountry.getmCode()+"/flat/64.png")
+                .apply(new RequestOptions().override(240, 160))
+                .into(actionbar_img);
+
         actionbar_title.setText(mCountry);
 
         actionBar.setCustomView(v);
@@ -106,6 +124,18 @@ String mCode;
         tvDetailTotalRecovered = findViewById(R.id.tvDetailTotalRecovered);
         tvDetailTotalActive = findViewById(R.id.tvDetailTotalActive);
         tvDetailTotalCritical = findViewById(R.id.tvDetailTotalCritical);
+        tvDetailRecoveryRate = findViewById(R.id.textView23);
+        tvDetailDeathRate = findViewById(R.id.textView21);
+        tvDetailPerMillion = findViewById(R.id.textView25);
+        smallDetailTotalCases = findViewById(R.id.cases_new);
+        smallDetailTotalnewCases = findViewById(R.id.cases_lastest);
+
+
+        smallDetailTotalRecovered = findViewById(R.id.recovered);
+        smallDetailTotalnewRecovered = findViewById(R.id.recovered_latest);
+
+        smallDetailDeathCases  = findViewById(R.id.deaths);
+        smallDetailTotalDeathCases = findViewById(R.id.deaths_latest);
 
 
 
@@ -119,13 +149,39 @@ String mCode;
         tvDetailTotalRecovered.setText(covidCountry.getmRecovered());
         tvDetailTotalActive.setText(covidCountry.getmActive());
         tvDetailTotalCritical.setText(covidCountry.getmCritical());
+        tvDetailRecoveryRate.setText(String. format("%.2f", Double.valueOf(covidCountry.getRecoveryRate()))+"%");
+        tvDetailDeathRate.setText(String. format("%.2f", Double.valueOf(covidCountry.getDeathRate()))+"%");
+        if(!covidCountry.getCasesPerMillionPopulation().equals("0")){
+            tvDetailPerMillion.setText("( "+covidCountry.getCasesPerMillionPopulation()+" Per Million )");
+        }
+
+
+
+        smallDetailTotalCases.setText(refactorNumber(String.valueOf(covidCountry.getmCases())));
+        if(!covidCountry.getmTodayCases().equals("0")){
+            smallDetailTotalnewCases.setText("+"+covidCountry.getmTodayCases());
+        }
+
+
+        smallDetailTotalRecovered.setText(refactorNumber(String.valueOf(covidCountry.getmRecovered())));
+
+
+        smallDetailDeathCases.setText(refactorNumber(String.valueOf(covidCountry.getmDeaths())));
+        if(!covidCountry.getmTodayCases().equals("0")){
+            smallDetailTotalDeathCases.setText("+"+covidCountry.getmTodayDeaths());
+        }
 
     }
 
+
+
+
+
     /**
+     *
      * Maj3oula mbech tconverti el number min  2787896 lel 2 787 896
      *
-     * */
+     **/
     private String refactorNumber(String value){
 
         DecimalFormatSymbols customSymbols = DecimalFormatSymbols.getInstance(Locale.US);
@@ -133,6 +189,15 @@ String mCode;
         return new DecimalFormat("#,###", customSymbols).format(Integer.parseInt(value));
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     private void configureLineChart() {
         Description desc = new Description();
         desc.setText("Covid in "+mCountry);
@@ -227,41 +292,16 @@ String mCode;
             highLineDataSet.setDrawValues(false);
             highLineDataSet.setCircleRadius(10f);
             highLineDataSet.setCircleColor(Color.YELLOW);
-
-            //to make the smooth line as the graph is adrapt change so smooth curve
             highLineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            //to enable the cubic density : if 1 then it will be sharp curve
             highLineDataSet.setCubicIntensity(0.2f);
-
-
-            //set the gradiant then the above draw fill color will be replace
-            // Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.gradiant);
-            //  highLineDataSet.setFillDrawable(drawable);
-
-            //set legend disable or enable to hide {the left down corner name of graph}
-
-
-            //to remove the cricle from the graph
             highLineDataSet.setDrawCircles(false);
-
-            //lineDataSet.setColor(ColorTemplate.COLORFUL_COLORS);
-
-
             ArrayList<ILineDataSet> iLineDataSetArrayList = new ArrayList<>();
             iLineDataSetArrayList.add(highLineDataSet);
-
-            //LineData is the data accord
             LineData lineData = new LineData(iLineDataSetArrayList);
             lineData.setValueTextSize(13f);
             lineData.setValueTextColor(Color.BLACK);
-
             dataSets.add(highLineDataSet);
-
-
-
             LineDataSet lowLineDataSet = new LineDataSet(pricesLow,  " Dead ");
-
-
             lowLineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             lowLineDataSet.setLineWidth(5f);
             lowLineDataSet.setColor(getResources().getColor(R.color.dead));

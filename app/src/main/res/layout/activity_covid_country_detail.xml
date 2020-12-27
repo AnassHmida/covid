@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:gravity="center"
-    tools:context=".ui.Activities.details.CovidCountryDetail">
+    tools:context=".ui.Activities.details.CovidCountryDetailActivity$">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/bold"
+                android:fontFamily="@font/montserrat_bold"
                 android:text="547"
                 android:textColor="#0D8E53"
                 android:textSize="36sp"
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:fontFamily="@font/regular"
+                android:fontFamily="@font/montserrat"
                 android:text="From Health Center"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/textView19"
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/medium"
+                android:fontFamily="@font/montserrat"
                 android:text="Total Cases"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -86,9 +86,9 @@
                 android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/bold"
+                android:fontFamily="@font/montserrat_bold"
                 android:text="6.43%"
-                android:textColor="#0D8E53"
+                android:textColor="@color/dead"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="@+id/activity_main_linechart"
                 app:layout_constraintTop_toBottomOf="@+id/activity_main_linechart" />
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="From Last Week"
+                android:text="Death Rate"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView21"
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/bold"
+                android:fontFamily="@font/montserrat_bold"
                 android:text="9.43%"
                 android:textColor="#0D8E53"
                 android:textSize="20sp"
@@ -133,8 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:fontFamily="@font/medium"
-                android:text="5.9%"
+                android:fontFamily="@font/montserrat"
                 android:textColor="#0D8E53"
                 app:layout_constraintBottom_toBottomOf="@+id/textView19"
                 app:layout_constraintStart_toEndOf="@+id/textView19"
@@ -156,36 +155,161 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1"
+            >
 
 
             <TextView
                 android:id="@+id/textView26"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/medium"
-                android:text="Global Map"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_width="match_parent"
+                android:layout_weight="0.80"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:gravity="center|start"
+                android:fontFamily="@font/montserrat"
+                android:text="Cases overview"
+                android:textSize="18sp"
+             />
 
-            <ImageView
-                android:id="@+id/imageView18"
-                android:layout_width="0dp"
-                android:layout_height="165dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView26"
-                app:layout_constraintVertical_bias="1.0"
-                app:srcCompat="@drawable/map" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="0.20"
+            android:weightSum="3"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:weightSum="3">
 
+                <TextView
+                    android:id="@+id/item1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Total cases"
+                    android:textSize="15sp"
+                    />
+                <TextView
+                    android:id="@+id/cases_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:fontFamily="@font/montserrat_bold"
+
+                    android:textColor="@color/confirmed"
+                    android:textSize="15sp"
+                    />
+                <TextView
+                    android:id="@+id/cases_lastest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+
+                    android:gravity="center|top"
+                    android:textSize="10dp"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/item2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Recovered"
+                    android:textSize="15sp"
+                    />
+                <TextView
+                    android:id="@+id/recovered"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_bold"
+
+                    android:textColor="@color/recovered"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    />
+                <TextView
+                    android:id="@+id/recovered_latest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+
+                    android:gravity="top|center"
+                    android:textSize="10dp"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/item3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Deaths"
+                    android:gravity="center|bottom"
+                    android:textSize="15sp"
+                    />
+                <TextView
+                    android:id="@+id/deaths"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_bold"
+
+                    android:textColor="@color/dead"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    />
+                <TextView
+                    android:id="@+id/deaths_latest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+
+                    android:gravity="center|top"
+                    android:textSize="10dp"
+                    />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -195,7 +319,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:gravity="center"
-    tools:context=".ui.Activities.details.CovidCountryDetail">
+    tools:context=".ui.Activities.details.CovidCountryDetailActivity$">
 
 
     <LinearLayout

@@ -4,16 +4,30 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+
+
     <TextView
         android:id="@+id/action_bar_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="24dp"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/montserrat_bold" />
 
+
+    <ImageView
+        android:id="@+id/title_img"
+        android:src="@drawable/us"
+        android:visibility="gone"
+        android:layout_width="36dp"
+        android:layout_toEndOf="@+id/action_bar_image"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
         android:text="@string/app_name"
         android:textSize="24dp"
         android:textColor="@android:color/black"
         android:fontFamily="@font/bold" />
-
 
 
 </RelativeLayout>

@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.Activities.details.CovidCountryDetail"></activity>
+        <activity android:name=".ui.Activities.details.CovidCountryDetailActivity"></activity>
         <activity
             android:name=".ui.Activities.home.HomeActivity"
             android:label="@string/app_name">

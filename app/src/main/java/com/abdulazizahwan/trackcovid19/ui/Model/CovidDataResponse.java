@@ -295,22 +295,22 @@ public  class CovidDataResponse {
     }
 
     public static class CoordinatesEntity {
-        private int longitude;
-        private int latitude;
+        private float longitude;
+        private float latitude;
 
-        public int getLongitude() {
+        public float getLongitude() {
             return longitude;
         }
 
-        public void setLongitude(int longitude) {
+        public void setLongitude(float longitude) {
             this.longitude = longitude;
         }
 
-        public int getLatitude() {
+        public float getLatitude() {
             return latitude;
         }
 
-        public void setLatitude(int latitude) {
+        public void setLatitude(float latitude) {
             this.latitude = latitude;
         }
     }

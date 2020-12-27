@@ -1,7 +1,6 @@
 package com.abdulazizahwan.trackcovid19.ui.Activities.home;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -31,33 +29,16 @@ import com.abdulazizahwan.trackcovid19.ui.Model.AllCovidData;
 import com.abdulazizahwan.trackcovid19.ui.Model.CovidCountry;
 
 import com.abdulazizahwan.trackcovid19.ui.Activities.Adapters.CovidCountryAdapter;
-import com.abdulazizahwan.trackcovid19.ui.Activities.details.CovidCountryDetail;
+import com.abdulazizahwan.trackcovid19.ui.Activities.details.CovidCountryDetailActivity;
 
 import com.abdulazizahwan.trackcovid19.ui.Model.CovidDataList;
-import com.abdulazizahwan.trackcovid19.ui.Model.CovidDataResponse;
 import com.abdulazizahwan.trackcovid19.ui.Model.DataEntity;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.github.mikephil.charting.data.Entry;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -132,7 +113,7 @@ public class HomeActivity extends AppCompatActivity {
  *Initialisation lel Retro fit
  *
  */
-    /
+
     private void setupApi() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.level(HttpLoggingInterceptor.Level.BODY);
@@ -207,7 +188,11 @@ public class HomeActivity extends AppCompatActivity {
                                data.getLatestData().getRecovered(),
                                 data.getLatestData().getCritical(),
                                 data.getLatestData().getCritical(),
-                               data.getCode()
+                                data.getCode(),
+                                String.valueOf(data.getLatestData().getCalculated().getCasesPerMillionPopulation()),
+                                String.valueOf(data.getLatestData().getCalculated().getRecoveryRate()),
+                                String.valueOf(data.getLatestData().getCalculated().getDeathRate())
+
                         ));
                     }
 
@@ -229,9 +214,6 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     });
 
-                    // Action Bar Title
-                    // getActivity().setTitle(jsonArray.length() + " countries");
-
                     showRecyclerView();
 
                 }
@@ -248,7 +230,9 @@ public class HomeActivity extends AppCompatActivity {
 /**
  *
  *
- * Tharba 3al API bech yjiblek el list mfeltriya bil ALPHABET A- Z*/
+ * Tharba 3al API bech yjiblek el list mfeltriya bil ALPHABET A- Z
+ *
+ * */
 
 
     private void getDataFromServerSortAlphabet() {
@@ -265,6 +249,8 @@ public class HomeActivity extends AppCompatActivity {
 
                     for (DataEntity data : responseData.getData()
                     ) {
+
+                        Log.d(TAG, "onResponse: "+String.valueOf(data.getLatestData().getCalculated().getCasesPerMillionPopulation()));
                         covidCountries.add(new CovidCountry(
                                 data.getName(),
                                 Integer.parseInt(data.getLatestData().getConfirmed()),
@@ -274,7 +260,11 @@ public class HomeActivity extends AppCompatActivity {
                                 data.getLatestData().getRecovered(),
                                 data.getLatestData().getCritical(),
                                 data.getLatestData().getCritical(),
-                                data.getCode()
+                                data.getCode(),
+                                String.valueOf(data.getLatestData().getCalculated().getCasesPerMillionPopulation()),
+                                String.valueOf(data.getLatestData().getCalculated().getRecoveryRate()),
+                                String.valueOf(data.getLatestData().getCalculated().getDeathRate())
+
                         ));
                     }
 
@@ -314,11 +304,13 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    /**Lahna intent bech yemchi lel lista mta3 el details bil informatiosn eli 3andou 3al country heka
+    /**
+     *
+     * Lahna intent bech yemchi lel lista mta3 el details bil informatiosn eli 3andou 3al country heka
      *
      * */
     private void showSelectedCovidCountry(CovidCountry covidCountry) {
-        Intent covidCovidCountryDetail = new Intent(getApplicationContext() ,CovidCountryDetail.class);
+        Intent covidCovidCountryDetail = new Intent(getApplicationContext() , CovidCountryDetailActivity.class);
         covidCovidCountryDetail.putExtra("EXTRA_COVID", covidCountry);
         startActivity(covidCovidCountryDetail);
     }
@@ -340,13 +332,8 @@ public class HomeActivity extends AppCompatActivity {
          sortalpha = menu.findItem(R.id.action_sort_alpha);
          sortcases = menu.findItem(R.id.action_sort_cases);
 
-    sortalpha.setVisible(false);
-    sortcases.setVisible(false);
-
-
-
-
-
+       sortalpha.setVisible(false);
+        sortcases.setVisible(false);
         SearchView searchView = new SearchView(getBaseContext());
         searchView.setQueryHint("Search...");
         searchView.setMaxWidth(Integer.MAX_VALUE);
@@ -375,7 +362,11 @@ public class HomeActivity extends AppCompatActivity {
 
 
 /**
+ *
+ *
  * lahna mabadeltech barcha , chouf el tuto mta3ek
+ *
+ *
  * */
 
 
@@ -415,7 +406,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
     /***
+     *
      * Lahna chnouwa ysir kif tenzel 3al bouton mta3 el filtre
+     *
      *
      * */
     @Override

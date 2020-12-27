@@ -6,8 +6,36 @@ import android.os.Parcelable;
 public class CovidCountry implements Parcelable {
     String mCovidCountry, mTodayCases, mDeaths, mTodayDeaths, mRecovered, mActive, mCritical,mCode;
     int mCases;
+    CalculatedEntity calculated;
+    private String casesPerMillionPopulation;
+    private String recoveryRate;
+    private String deathRate;
 
-    public CovidCountry(String mCovidCountry, int mCases, String mTodayCases, String mDeaths, String mTodayDeaths, String mRecovered, String mActive, String mCritical, String CountryCode) {
+    public String getCasesPerMillionPopulation() {
+        return casesPerMillionPopulation;
+    }
+
+    public void setCasesPerMillionPopulation(String casesPerMillionPopulation) {
+        this.casesPerMillionPopulation = casesPerMillionPopulation;
+    }
+
+    public String getRecoveryRate() {
+        return recoveryRate;
+    }
+
+    public void setRecoveryRate(String recoveryRate) {
+        this.recoveryRate = recoveryRate;
+    }
+
+    public String getDeathRate() {
+        return deathRate;
+    }
+
+    public void setDeathRate(String deathRate) {
+        this.deathRate = deathRate;
+    }
+
+    public CovidCountry(String mCovidCountry, int mCases, String mTodayCases, String mDeaths, String mTodayDeaths, String mRecovered, String mActive, String mCritical, String CountryCode, String casesPerMillionPopulation, String recoveryRate, String deathRate) {
         this.mCovidCountry = mCovidCountry;
         this.mCases = mCases;
         this.mTodayCases = mTodayCases;
@@ -17,7 +45,18 @@ public class CovidCountry implements Parcelable {
         this.mActive = mActive;
         this.mCritical = mCritical;
         this.mCode = CountryCode;
+        this.casesPerMillionPopulation = casesPerMillionPopulation;
+        this.recoveryRate = recoveryRate;
+        this.deathRate = deathRate;
 
+    }
+
+    public CalculatedEntity getCalculated() {
+        return calculated;
+    }
+
+    public void setCalculated(CalculatedEntity calculated) {
+        this.calculated = calculated;
     }
 
     public String getmCode() {
@@ -78,6 +117,10 @@ public class CovidCountry implements Parcelable {
         dest.writeString(this.mActive);
         dest.writeString(this.mCritical);
         dest.writeString(this.mCode);
+        dest.writeString(this.casesPerMillionPopulation);
+        dest.writeString(this.recoveryRate);
+        dest.writeString(this.deathRate);
+
 
     }
 
@@ -91,6 +134,9 @@ public class CovidCountry implements Parcelable {
         this.mActive = in.readString();
         this.mCritical = in.readString();
         this.mCode = in.readString();
+        this.casesPerMillionPopulation = in.readString();
+        this.recoveryRate = in.readString();
+        this.deathRate = in.readString();
 
     }
 

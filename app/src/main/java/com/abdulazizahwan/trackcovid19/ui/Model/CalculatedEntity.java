@@ -1,9 +1,12 @@
 package com.abdulazizahwan.trackcovid19.ui.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CalculatedEntity {
+public class CalculatedEntity  implements Parcelable {
     @Expose
     @SerializedName("cases_per_million_population")
     private int casesPerMillionPopulation;
@@ -36,5 +39,15 @@ public class CalculatedEntity {
 
     public void setDeathRate(double deathRate) {
         this.deathRate = deathRate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
     }
 }
