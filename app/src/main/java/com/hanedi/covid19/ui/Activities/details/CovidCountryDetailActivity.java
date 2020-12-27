@@ -1,10 +1,9 @@
-package com.abdulazizahwan.trackcovid19.ui.Activities.details;
+package com.hanedi.covid19.ui.Activities.details;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,10 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.abdulazizahwan.trackcovid19.R;
-import com.abdulazizahwan.trackcovid19.ui.DataSets.CovidAPI;
-import com.abdulazizahwan.trackcovid19.ui.Model.CovidCountry;
-import com.abdulazizahwan.trackcovid19.ui.Model.CovidDataResponse;
+import com.hanedi.covid19.R;
+import com.hanedi.covid19.ui.DataSets.CovidAPI;
+import com.hanedi.covid19.ui.Model.CovidCountry;
+import com.hanedi.covid19.ui.Model.CovidDataResponse;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.mikephil.charting.charts.LineChart;

@@ -1,4 +1,4 @@
-package com.abdulazizahwan.trackcovid19.ui.Model;
+package com.hanedi.covid19.ui.Model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

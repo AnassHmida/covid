@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.abdulazizahwan.trackcovid19">
+    package="com.hanedi.covid19">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,10 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.Activities.details.CovidCountryDetailActivity"></activity>
-        <activity android:name=".ui.Activities.home.HomeActivity"></activity>
+        <activity android:name="com.hanedi.covid19.ui.Activities.details.CovidCountryDetailActivity"></activity>
+        <activity android:name="com.hanedi.covid19.ui.Activities.home.HomeActivity"></activity>
         <activity
-            android:name=".ui.Activities.IntroActivity"
+            android:name="com.hanedi.covid19.ui.Activities.IntroActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

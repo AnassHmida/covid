@@ -1,4 +1,4 @@
-package com.abdulazizahwan.trackcovid19.ui.Activities.Adapters;
+package com.hanedi.covid19.ui.Activities.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abdulazizahwan.trackcovid19.R;
-import com.abdulazizahwan.trackcovid19.ui.Model.CovidCountry;
+import com.hanedi.covid19.R;
+import com.hanedi.covid19.ui.Model.CovidCountry;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 

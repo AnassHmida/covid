@@ -1,4 +1,4 @@
-package com.abdulazizahwan.trackcovid19;
+package com.hanedi.covid19;
 
 import org.junit.Test;
 

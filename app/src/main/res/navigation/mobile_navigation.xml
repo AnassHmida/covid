@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.abdulazizahwan.trackcovid19.ui.Activities.home.HomeFragment"
+        android:name="com.hanedi.covid19.ui.Activities.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_country"
-        android:name="com.abdulazizahwan.trackcovid19.ui.country.CountryFragment"
+        android:name="com.hanedi.covid19.ui.country.CountryFragment"
         android:label="@string/title_country"
         tools:layout="@layout/fragment_country" />
 </navigation>

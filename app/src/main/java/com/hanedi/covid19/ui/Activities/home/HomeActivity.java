@@ -1,4 +1,4 @@
-package com.abdulazizahwan.trackcovid19.ui.Activities.home;
+package com.hanedi.covid19.ui.Activities.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,17 +22,17 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abdulazizahwan.trackcovid19.R;
+import com.hanedi.covid19.R;
 
-import com.abdulazizahwan.trackcovid19.ui.DataSets.CovidAPI;
-import com.abdulazizahwan.trackcovid19.ui.Model.AllCovidData;
-import com.abdulazizahwan.trackcovid19.ui.Model.CovidCountry;
+import com.hanedi.covid19.ui.DataSets.CovidAPI;
+import com.hanedi.covid19.ui.Model.AllCovidData;
+import com.hanedi.covid19.ui.Model.CovidCountry;
 
-import com.abdulazizahwan.trackcovid19.ui.Activities.Adapters.CovidCountryAdapter;
-import com.abdulazizahwan.trackcovid19.ui.Activities.details.CovidCountryDetailActivity;
+import com.hanedi.covid19.ui.Activities.Adapters.CovidCountryAdapter;
+import com.hanedi.covid19.ui.Activities.details.CovidCountryDetailActivity;
 
-import com.abdulazizahwan.trackcovid19.ui.Model.CovidDataList;
-import com.abdulazizahwan.trackcovid19.ui.Model.DataEntity;
+import com.hanedi.covid19.ui.Model.CovidDataList;
+import com.hanedi.covid19.ui.Model.DataEntity;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

@@ -1,8 +1,8 @@
-package com.abdulazizahwan.trackcovid19.ui.DataSets;
+package com.hanedi.covid19.ui.DataSets;
 
-import com.abdulazizahwan.trackcovid19.ui.Model.AllCovidData;
-import com.abdulazizahwan.trackcovid19.ui.Model.CovidDataList;
-import com.abdulazizahwan.trackcovid19.ui.Model.CovidDataResponse;
+import com.hanedi.covid19.ui.Model.AllCovidData;
+import com.hanedi.covid19.ui.Model.CovidDataList;
+import com.hanedi.covid19.ui.Model.CovidDataResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

@@ -1,11 +1,11 @@
-package com.abdulazizahwan.trackcovid19.ui.Activities.home;
+package com.hanedi.covid19.ui.Activities.home;
 
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abdulazizahwan.trackcovid19.R;
+import com.hanedi.covid19.R;
 
 public class ItemClickSupport {
     private final RecyclerView mRecyclerView;
