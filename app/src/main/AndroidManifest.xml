@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.Activities.details.CovidCountryDetailActivity"></activity>
+        <activity android:name=".ui.Activities.home.HomeActivity"></activity>
         <activity
-            android:name=".ui.Activities.home.HomeActivity"
+            android:name=".ui.Activities.IntroActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

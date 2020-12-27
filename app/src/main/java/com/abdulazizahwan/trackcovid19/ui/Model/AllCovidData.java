@@ -1,6 +1,9 @@
 package com.abdulazizahwan.trackcovid19.ui.Model;
 
-public class AllCovidData {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class AllCovidData implements Parcelable {
 
     private String updated;
     private String cases;
@@ -23,6 +26,49 @@ public class AllCovidData {
     private String recoveredPerOneMillion;
     private String criticalPerOneMillion;
     private String affectedCountries;
+
+    public AllCovidData(String cases, String todayCases, String deaths, String recovered) {
+        this.cases = cases;
+        this.todayCases = todayCases;
+        this.deaths = deaths;
+        this.recovered = recovered;
+    }
+
+    protected AllCovidData(Parcel in) {
+        updated = in.readString();
+        cases = in.readString();
+        todayCases = in.readString();
+        deaths = in.readString();
+        todayDeaths = in.readString();
+        recovered = in.readString();
+        todayRecovered = in.readString();
+        active = in.readString();
+        critical = in.readString();
+        casesPerOneMillion = in.readString();
+        deathsPerOneMillion = in.readString();
+        tests = in.readString();
+        testsPerOneMillion = in.readString();
+        population = in.readString();
+        oneCasePerPeople = in.readString();
+        oneDeathPerPeople = in.readString();
+        oneTestPerPeople = in.readString();
+        activePerOneMillion = in.readString();
+        recoveredPerOneMillion = in.readString();
+        criticalPerOneMillion = in.readString();
+        affectedCountries = in.readString();
+    }
+
+    public static final Creator<AllCovidData> CREATOR = new Creator<AllCovidData>() {
+        @Override
+        public AllCovidData createFromParcel(Parcel in) {
+            return new AllCovidData(in);
+        }
+
+        @Override
+        public AllCovidData[] newArray(int size) {
+            return new AllCovidData[size];
+        }
+    };
 
     public String getUpdated() {
         return updated;
@@ -190,5 +236,35 @@ public class AllCovidData {
 
     public void setAffectedCountries(String affectedCountries) {
         this.affectedCountries = affectedCountries;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(updated);
+        parcel.writeString(cases);
+        parcel.writeString(todayCases);
+        parcel.writeString(deaths);
+        parcel.writeString(todayDeaths);
+        parcel.writeString(recovered);
+        parcel.writeString(todayRecovered);
+        parcel.writeString(active);
+        parcel.writeString(critical);
+        parcel.writeString(casesPerOneMillion);
+        parcel.writeString(deathsPerOneMillion);
+        parcel.writeString(tests);
+        parcel.writeString(testsPerOneMillion);
+        parcel.writeString(population);
+        parcel.writeString(oneCasePerPeople);
+        parcel.writeString(oneDeathPerPeople);
+        parcel.writeString(oneTestPerPeople);
+        parcel.writeString(activePerOneMillion);
+        parcel.writeString(recoveredPerOneMillion);
+        parcel.writeString(criticalPerOneMillion);
+        parcel.writeString(affectedCountries);
     }
 }

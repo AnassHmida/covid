@@ -103,8 +103,9 @@ public class HomeActivity extends AppCompatActivity {
         getDataFromServerSortTotalCases();
 
         // call Volley
-        getAllCovidData();
 
+        AllCovidData covidCountry = getIntent().getParcelableExtra("EXTRA_COVID");
+        getAllCovidData(covidCountry);
 
     }
 
@@ -131,31 +132,19 @@ public class HomeActivity extends AppCompatActivity {
     /**
      * Tharba mta3 el API loula bech tjib el global  data , number mta3 el recovered gloval etc , bech yet7atou filHome Acitivity
      * */
-    private void getAllCovidData() {
-        covidAPI.getAllCovidData().enqueue(new Callback<AllCovidData>() {
+    private void getAllCovidData(AllCovidData covidCountry) {
 
-            @Override
-            public void onResponse(Call<AllCovidData> call, retrofit2.Response<AllCovidData> response) {
 
-                if (response.body() != null) {
+
+                if (covidCountry != null) {
                     progressBar.setVisibility(View.GONE);
-                    tvTotalConfirmed.setText(refactorNumber(String.valueOf(response.body().getCases())));
-                    tvTotalDeaths.setText(refactorNumber(String.valueOf(response.body().getDeaths())));
-                    tvTotalRecovered.setText(refactorNumber(String.valueOf(response.body().getRecovered())));
-                    tvLastUpdated.setText(refactorNumber(String.valueOf(response.body().getTodayCases())));
+                    tvTotalConfirmed.setText(covidCountry.getCases());
+                    tvTotalDeaths.setText(covidCountry.getDeaths());
+                    tvTotalRecovered.setText(covidCountry.getRecovered());
+                    tvLastUpdated.setText(covidCountry.getTodayCases());
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AllCovidData> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
-                String msg = "Failed to fetch data ";
-                tvTotalConfirmed.setText(msg);
-                tvTotalDeaths.setText(msg);
-                tvTotalRecovered.setText(msg);
-                tvLastUpdated.setText(msg);
-            }
-        });
+
     }
 
 
