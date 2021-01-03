@@ -26,6 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class IntroActivity extends Activity {
 
     private CovidAPI covidAPI;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
